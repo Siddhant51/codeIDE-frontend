@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import CodeEditor from "./pages/Editor";
+import HomePage from "./pages/Home";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import { useState } from "react";
+import { ProtectedRoute, ProtectedRoute2 } from "./helper/Protected";
+import { ThemeProvider } from "./context/Theme";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <ThemeProvider>
+      <div className="App w-full h-screen">
+        <Router>
+          <Routes>
+            <Route
+              path="/login"
+              element={
+                <ProtectedRoute2 token={token}>
+                  <Login setToken={setToken} />
+                </ProtectedRoute2>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <ProtectedRoute2 token={token}>
+                  <Register />
+                </ProtectedRoute2>
+              }
+            />
+
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute token={token}>
+                  <HomePage token={token} setToken={setToken} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/editor/:projectId"
+              element={
+                <ProtectedRoute token={token}>
+                  <CodeEditor token={token} />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Router>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
