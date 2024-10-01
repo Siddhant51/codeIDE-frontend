@@ -4,18 +4,19 @@ import { MdLightMode } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/Theme";
+import { Api } from "../helper/Api";
 
 const Login = ({ setToken }) => {
   const { isLightMode, toggleTheme } = useContext(ThemeContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("test@test.com");
+  const [password, setPassword] = useState("test");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/login", {
+      const response = await axios.post(`${Api}/login`, {
         email,
         password,
       });

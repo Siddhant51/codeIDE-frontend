@@ -8,6 +8,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/Theme";
+import { Api } from "../helper/Api";
 
 const CodeEditor = ({ token }) => {
   const [tab, setTab] = useState("html");
@@ -22,14 +23,11 @@ const CodeEditor = ({ token }) => {
 
   const fetchProject = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/project/${projectId}`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await axios.get(`${Api}/project/${projectId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       console.log("Project fetched successfully:", response.data);
       const { htmlCode, cssCode, jsCode } = response.data;
       setHtmlCode(htmlCode);
@@ -69,7 +67,7 @@ const CodeEditor = ({ token }) => {
   const saveCode = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/projects/${projectId}`,
+        `${Api}/project/${projectId}`,
         {
           htmlCode,
           cssCode,
@@ -113,7 +111,7 @@ const CodeEditor = ({ token }) => {
   const deleteProject = async () => {
     if (window.confirm("Are you sure you want to delete this project?")) {
       try {
-        await axios.delete(`http://localhost:5000/projects/${projectId}`, {
+        await axios.delete(`${Api}/project/${projectId}`, {
           headers: {
             Authorization: token,
           },

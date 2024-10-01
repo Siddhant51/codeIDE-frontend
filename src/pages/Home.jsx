@@ -6,6 +6,7 @@ import { MdLightMode } from "react-icons/md";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/Theme";
+import { Api } from "../helper/Api";
 
 const HomePage = ({ token, setToken }) => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const HomePage = ({ token, setToken }) => {
 
   const fetchProjects = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/projects/`, {
+      const response = await axios.get(`${Api}/projects`, {
         headers: {
           Authorization: token,
         },
@@ -61,7 +62,7 @@ const HomePage = ({ token, setToken }) => {
       const projectName = prompt("Enter project name:");
       if (projectName) {
         const response = await axios.post(
-          "http://localhost:5000/project",
+          `${Api}/project`,
           {
             name: projectName,
             htmlCode,
@@ -159,7 +160,6 @@ const HomePage = ({ token, setToken }) => {
               <Link
                 to={`/editor/${project._id}`}
                 key={project._id}
-                replace
                 className={`${
                   isLightMode ? "bg-white" : "bg-gray-800"
                 } shadow-md rounded-lg p-4 text-center transition-transform transform hover:scale-105 flex items-center justify-center gap-2`}

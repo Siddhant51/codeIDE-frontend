@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { MdLightMode } from "react-icons/md";
 import axios from "axios";
 import { ThemeContext } from "../context/Theme";
+import { Api } from "../helper/Api";
 
 const Register = () => {
   const { isLightMode, toggleTheme } = useContext(ThemeContext);
@@ -14,7 +15,7 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5000/register", {
+      const response = await axios.post(`${Api}/register`, {
         username,
         email,
         password,
